@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love</title>
+<style>
+
+	@font-face {
+		font-family: 'Amstirdam';
+		src: url('css/SVN-Amstirdam.otf') format('opentype');
+		font-weight: normal;
+		font-style: normal;
+    }
+
+
+    body {
+		font-size: 10px;
+		height: 100vh;
+		margin: 0;
+		overflow: hidden;
+    }
+	
+	.background {
+		/* The image used */
+		background-image: url("backgroundV2.png");
+
+		/* Full height */
+		height: 100%; 
+
+		/* Center and scale the image nicely */
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	
+	.envelope-container {
+		height: 100%;
+		width: 100%;
+	}
+
+	.envelope {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 500px;
+		cursor: grab;
+		transform-origin: center;
+		user-select: none;
+		
+		
+		-webkit-user-drag: none;
+	}
+
+	.envelope:active {
+		cursor: grabbing;
+}
+
+
+	
+</style>
+<script src="https://kit.fontawesome.com/d5c9485222.js" crossorigin="anonymous"></script>
+
+
+
+<body>
+    <div class="background"></div>
+
+    <div class="envelope-container">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+		<img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+        <img src="envelope.png" class="envelope">
+    </div>
+</body>
+
+
+<script>
+const envelopes = document.querySelectorAll('.envelope');
+
+const viewportHeight = window.innerHeight;
+const spreadCount = 10;
+const topPadding = 80;
+const bottomPadding = 80;
+
+envelopes.forEach((env, index) => {
+    const rotation = Math.random() * 40 - 20;
+    env.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+    env.style.zIndex = index;
+
+    // Random horizontal position (stay inside viewport)
+    const maxX = window.innerWidth - env.offsetWidth;
+    env.style.left = `${Math.random() * maxX}px`;
+
+    if (index < 6) {
+        // First 10: fixed vertical spacing
+        env.style.top = `${index * 200}px`;
+        env.style.left = `50%`;
+    } else {
+        // Rest: random vertical position
+        const maxY = window.innerHeight - env.offsetHeight;
+        env.style.top = `${Math.random() * maxY}px`;
+    }
+
+    makeDraggable(env);
+});
+
+
+
+
+envelopes.forEach(env => {
+    env.setAttribute('draggable', 'false');
+});
+
+
+function makeDraggable(element) {
+    let offsetX = 0;
+    let offsetY = 0;
+    let isDragging = false;
+
+    let lastX = 0;
+    let lastY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+
+    element.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        element.style.zIndex = Date.now();
+
+        offsetX = e.clientX - element.offsetLeft;
+        offsetY = e.clientY - element.offsetTop;
+
+        lastX = e.clientX;
+        lastY = e.clientY;
+
+        document.addEventListener('pointermove', onMove);
+        document.addEventListener('pointerup', onUp);
+    });
+
+    function onMove(e) {
+        if (!isDragging) return;
+
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+
+        velocityX = e.clientX - lastX;
+        velocityY = e.clientY - lastY;
+
+        lastX = e.clientX;
+        lastY = e.clientY;
+
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+    }
+
+    function onUp() {
+        isDragging = false;
+
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', onUp);
+
+        const speed = Math.hypot(velocityX, velocityY);
+
+        // 🔥 THROW THRESHOLD (tweak this)
+        if (speed > 15) {
+            throwAway(element, velocityX, velocityY);
+        }
+    }
+}
+
+function throwAway(element, vx, vy) {
+    const friction = 0.97;
+    let x = element.offsetLeft;
+    let y = element.offsetTop;
+
+    function animate() {
+        x += vx;
+        y += vy;
+
+        vx *= friction;
+        vy *= friction;
+
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+
+        // If completely off screen → remove
+        if (
+            x < -element.offsetWidth ||
+            x > window.innerWidth + element.offsetWidth ||
+            y < -element.offsetHeight ||
+            y > window.innerHeight + element.offsetHeight
+        ) {
+            element.remove();
+            return;
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+}
+
+
+</script>
+
+
+
+</html>
